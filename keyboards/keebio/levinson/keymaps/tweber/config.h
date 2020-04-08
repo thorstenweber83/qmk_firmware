@@ -23,6 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // #define USE_I2C
 
-/* Select hand configuration */
-// #define MASTER_RIGHT
-// #define EE_HANDS
+// set up hands via eeprom
+#define EE_HANDS
+// enable RGBW underglow
+#define RGBW
+// add all available animations
+#define RGBLIGHT_ANIMATIONS
+
