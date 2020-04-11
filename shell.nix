@@ -16,6 +16,20 @@ let
           sha256 = "0lxil8x0jjx7zbf90cy1rli650akaa6hpk8wk8s62vk2jbwnc60x";
         };
       });
+      bootloadHID = super.stdenv.mkDerivation rec {
+        name = "bootloadHID";
+        src = super.fetchurl {
+          url = https://www.obdev.at/downloads/vusb/bootloadHID.2012-12-08.tar.gz;
+          sha256 = "0m471p14q1lg1ygpvw8qf2jykwp23vxfsrpn5pn2wflsc8w7wkhm";
+        };
+        setSourceRoot = "sourceRoot=$(echo */commandline/)";
+        nativeBuildInputs = [ super.libusb ];
+        installPhase = ''
+          ls -la
+          mkdir -p $out/bin
+          cp bootloadHID $out/bin
+        '';
+      };
     };
 
   nixpkgs = builtins.fetchTarball {
@@ -41,7 +55,7 @@ stdenv.mkDerivation {
   name = "qmk-firmware";
 
   buildInputs = [ dfu-programmer dfu-util diffutils git python3 ]
-    ++ lib.optional avr [ avrbinutils avrgcc avrlibc avrdude ]
+    ++ lib.optional avr [ avrbinutils avrgcc avrlibc avrdude bootloadHID ]
     ++ lib.optional arm [ gcc-arm-embedded ]
     ++ lib.optional teensy [ teensy-loader-cli ];
 
