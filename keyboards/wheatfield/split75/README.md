@@ -26,3 +26,14 @@ or
 **Reset Key**: Hold down the key located at 3rd left position in the bottom row, commonly programmed as Left Control while plugging in the keyboard.
 
 See the [build environment setup](https://docs.qmk.fm/#/getting_started_build_tools) and the [make instructions](https://docs.qmk.fm/#/getting_started_make_guide) for more information. Brand new to QMK? Start with our [Complete Newbs Guide](https://docs.qmk.fm/#/newbs).
+
+
+needs flashing as root???
+
+hidraw devices belong to root only:
+
+    $ ll /dev/hidraw2 /dev/hidraw3
+    crw------- 1 root root 249, 2 Apr 12 01:41 /dev/hidraw2
+    crw------- 1 root root 249, 3 Apr 12 01:41 /dev/hidraw3
+
+maybe these need to belong to "input" group?

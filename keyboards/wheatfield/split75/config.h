@@ -16,3 +16,8 @@
 #define RGBLIGHT_SLEEP
 
 #define BACKLIGHT_PIN D4
+
+#undef NO_DEBUG
+#undef NO_PRINT
+
+#define IS_COMMAND() (get_mods() == (MOD_BIT(KC_LSHIFT) | MOD_BIT(KC_RSHIFT)))
