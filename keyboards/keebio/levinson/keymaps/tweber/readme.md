@@ -13,25 +13,10 @@ My layout is based on the default layout with the following changes:
 - move reset to ADJUST ESC
 - use Mod-Tap to add rctrl+rshift modifier on ESC key
   -> this is nice for copy + pasting inside terminals
+- configure audio feature using buzzer connected to C6 and ground.  
+  Sadly, memory size is only allows RGBLIGHT or AUDIO to be enabled. Also both left and right sides need to be flashed the same.
 
-
-keycodes
-```
-BL_STEP,
-
-RGB_TOG,
-RGB_MODE_FORWARD
-,RGB_VAD,
-RGB_HUI,
-
-
-```
-
-
-### questions
-
-is settings handedness in rev3/config.h correct?
 
 ### future improvements
 
-* add speaker: <https://www.reddit.com/r/olkb/comments/63awdo/adding_a_speaker/>
+- use the nice!nano board for bluetooth support? see <https://www.reddit.com/r/mechmarket/comments/gst1n6/ic_nicenano_the_super_thin_wireless_bluetooth/>

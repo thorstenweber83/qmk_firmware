@@ -25,8 +25,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // set up hands via eeprom
 #define EE_HANDS
-// enable RGBW underglow
-#define RGBW
-// add all available animations
-#define RGBLIGHT_ANIMATIONS
 
+#ifdef RGBLIGHT_ENABLE
+  // enable RGBW underglow
+  #define RGBW
+  // add all available animations
+  #define RGBLIGHT_ANIMATIONS
+#endif
+
+#ifdef AUDIO_ENABLE
+  #define C6_AUDIO
+  #define AUDIO_CLICKY
+  #define NO_MUSIC_MODE
+  #define STARTUP_SONG SONG(MARIO_THEME)
+  #define GOODBYE_SONG SONG(MARIO_GAMEOVER)
+  #define AUDIO_ON_SONG SONG(ONE_UP_SOUND)
+  #define AUDIO_OFF_SONG SONG(MARIO_GAMEOVER)
+#endif

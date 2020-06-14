@@ -15,7 +15,21 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
+  KC_SONG_IMPERIAL_MARCH,
+  KC_SONG_BASKET_CASE,
+  KC_SONG_E1M1_DOOM,
+  KC_SONG_ALL_STAR,
 };
+
+float imperial_march[][2] = SONG(IMPERIAL_MARCH);
+float basket_case[][2] = SONG(BASKET_CASE);
+float coin_sound[][2] = SONG(COIN_SOUND);
+float one_up_sound[][2] = SONG(ONE_UP_SOUND);
+float mario_theme[][2] = SONG(MARIO_THEME);
+float mario_gameover[][2] = SONG(MARIO_GAMEOVER);
+float mario_mushroom[][2] = SONG(MARIO_MUSHROOM);
+float e1m1_doom[][2] = SONG(E1M1_DOOM);
+float all_star[][2] = SONG(ALL_STAR);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -77,18 +91,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |  ä   |      |      |      | RGB  |  ü   |      |      |      |  ö   |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |Reset |      |  ß   |Aud on|Audoff|      | Left | Down |  Up  |Right |      |      |
+ * |Reset |      |  ß   |Aud on|Audoff|Clicky| Left | Down |  Up  |Right |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      | BL   |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |ANIM+ |darker|brghtr|ANIM- |
+ * |      |      |      |      |      |CK_UP CK_DOWN|      |ANIM+ |darker|brghtr|ANIM- |
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] =  LAYOUT_ortho_4x12( \
-  _______, RALT(KC_Q), _______,    _______, _______, RGB_TOG, RALT(KC_Y), _______, _______,          _______, RALT(KC_P), KC_DEL, \
-  RESET,   _______,    RALT(KC_S), AU_ON,   AU_OFF,  _______, KC_LEFT,    KC_DOWN, KC_UP,            KC_RGHT, _______,    _______, \
-  _______, _______,    _______,    _______, _______, BL_STEP, _______,    _______, _______,          _______, _______,    _______, \
-  _______, _______,    _______,    _______, _______, _______, _______,    _______, RGB_MODE_FORWARD, RGB_VAD, RGB_VAI,    RGB_MODE_REVERSE \
+  _______, RALT(KC_Q), _______,    _______, _______, RGB_TOG, RALT(KC_Y),             _______,           _______,          _______,             RALT(KC_P), KC_DEL, \
+  RESET,   _______,    RALT(KC_S), AU_ON,   AU_OFF,  CK_TOGG, KC_LEFT,                KC_DOWN,           KC_UP,            KC_RGHT,             _______,    _______, \
+  _______, _______,    _______,    _______, _______, BL_STEP, KC_SONG_IMPERIAL_MARCH, KC_SONG_E1M1_DOOM, KC_SONG_ALL_STAR, KC_SONG_BASKET_CASE, _______,    _______, \
+  _______, _______,    _______,    _______, _______, CK_UP  , CK_DOWN,                _______,           RGB_MODE_FORWARD, RGB_VAD,             RGB_VAI,    RGB_MODE_REVERSE \
 )
 
 
@@ -136,12 +150,48 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case ADJUST:
       if (record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          PLAY_SONG(mario_mushroom);
+        #endif
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
       }
       return false;
       break;
+
+  #ifdef AUDIO_ENABLE
+    case KC_BSPC:
+      if (record->event.pressed) {
+        PLAY_SONG(coin_sound);
+      }
+      break;
+    case KC_SONG_IMPERIAL_MARCH:
+      if (record->event.pressed) {
+        PLAY_SONG(imperial_march);
+      }
+      break;
+      return false;
+    case KC_SONG_BASKET_CASE:
+      if (record->event.pressed) {
+        PLAY_SONG(basket_case);
+      }
+      break;
+      return false;
+    case KC_SONG_E1M1_DOOM:
+      if (record->event.pressed) {
+        PLAY_SONG(basket_case);
+      }
+      break;
+      return false;
+    case KC_SONG_ALL_STAR:
+      if (record->event.pressed) {
+        PLAY_SONG(all_star);
+      }
+      break;
+      return false;
+  #endif
+
   }
   return true;
 }
