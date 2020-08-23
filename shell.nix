@@ -1,9 +1,9 @@
-{ avr ? true, arm ? true, teensy ? true }:
+{ avr ? true, arm ? true, teensy ? true, nrf5 ? true }:
 
 let
   nixpkgs = builtins.fetchTarball {
-    url = "https://github.com/NixOS/nixpkgs/archive/903266491b7b9b0379e88709feca0af900def0d9.tar.gz";
-    sha256 = "1b5wjrfgyha6s15k1yjyx41hvrpmd5szpkpkxk6l5hyrfqsr8wip";
+    url = "https://github.com/NixOS/nixpkgs/archive/9ed4ff16ac9f1d94f5d9efc40f2f737835b950c1.tar.gz";
+    sha256 = "1zhf51wsw1saazirrg2p2gbjm6ybyd616apbsp16k8a8028k1y32";
   };
 
   pkgs = import nixpkgs { };
@@ -31,6 +31,19 @@ let
     pep8-naming
     yapf
   ]);
+
+  nrf5-sdk = pkgs.stdenv.mkDerivation {
+    name = "nrf5-sdk";
+    src = pkgs.fetchurl {
+      url = https://developer.nordicsemi.com/nRF5_SDK/nRF5_SDK_v15.x.x/nRF5_SDK_15.0.0_a53641a.zip;
+      sha256 = "1dv5gq7p86s6xbyr07bmf9b9nd6wpqsijjc6jz3c5kpxbf71753m";
+    };
+    buildInputs = [pkgs.unzip];
+    installPhase = ''
+      mkdir -p $out
+      cp -r * $out/
+    '';
+  };
 in
 
 with pkgs;
@@ -47,7 +60,7 @@ let
     "-L${avrlibc}/avr/lib/avr51"
   ];
 in
-mkShell {
+mkShell ({
   name = "qmk-firmware";
 
   buildInputs = [ dfu-programmer dfu-util diffutils git pythonEnv ]
@@ -58,7 +71,8 @@ mkShell {
       avrdude
     ]
     ++ lib.optional arm [ gcc-arm-embedded ]
-    ++ lib.optional teensy [ teensy-loader-cli ];
+    ++ lib.optional teensy [ teensy-loader-cli ]
+    ++ lib.optional nrf5 [ nrfutil ];
 
   AVR_CFLAGS = lib.optional avr avr_incflags;
   AVR_ASFLAGS = lib.optional avr avr_incflags;
@@ -68,3 +82,7 @@ mkShell {
     unset NIX_TARGET_CFLAGS_COMPILE
   '';
 }
+//
+lib.optionalAttrs nrf5 {
+  NRFSDK15_ROOT = nrf5-sdk;
+})
