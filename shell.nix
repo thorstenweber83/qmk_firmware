@@ -44,6 +44,31 @@ let
       cp -r * $out/
     '';
   };
+
+  adafruit-nrfutil = with pkgs.python3Packages; buildPythonApplication rec {
+    pname = "adafruit-nrfutil";
+    version =  "474a584a97590f0fe928f1633596f809b4ab1297";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "adafruit";
+      repo = "Adafruit_nRF52_nrfutil";
+      rev = version;
+      sha256 = "0p3fn36s189q4xqakq4cwk5943ga23w7fw3p5k5nnv6d0if1mv2b";
+    };
+
+    propagatedBuildInputs = [
+      ecdsa
+      pyserial
+      click
+    ];
+
+    checkInputs = [
+      behave
+      nose
+    ];
+
+    doCheck = false;
+  };
 in
 
 with pkgs;
@@ -72,7 +97,7 @@ mkShell ({
     ]
     ++ lib.optional arm [ gcc-arm-embedded ]
     ++ lib.optional teensy [ teensy-loader-cli ]
-    ++ lib.optional nrf5 [ nrfutil ];
+    ++ lib.optional nrf5 [ nrfutil adafruit-nrfutil ];
 
   AVR_CFLAGS = lib.optional avr avr_incflags;
   AVR_ASFLAGS = lib.optional avr avr_incflags;
