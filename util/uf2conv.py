@@ -200,6 +200,9 @@ def get_drives():
         if sys.platform == "darwin":
             rootpath = "/Volumes"
         elif sys.platform == "linux":
+            nixosRootPath = "/run/media"
+            if os.path.isdir(nixosRootPath):
+                rootpath = nixosRootPath
             tmp = rootpath + "/" + os.environ["USER"]
             if os.path.isdir(tmp):
                 rootpath = tmp
