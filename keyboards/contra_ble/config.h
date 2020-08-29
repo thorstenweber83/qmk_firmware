@@ -24,13 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define DEVICE_VER      0x0001
 /* in python2: list(u"whatever".encode('utf-16-le')) */
 /*   at most 32 characters or the ugly hack in usb_main.c borks */
-#define MANUFACTURER QMK
-#define PRODUCT BLE Micro Test
-#define DESCRIPTION QMK based keyboard
+#define MANUFACTURER    Cartel
+#define PRODUCT         Contra BLE
+#define DESCRIPTION     Keyboard
 
 /* key matrix size */
-#define MATRIX_ROWS 1
-#define MATRIX_COLS 19
+#define MATRIX_ROWS 4
+#define MATRIX_COLS 12
 
 #define DIODE_DIRECTION COL2ROW
 
