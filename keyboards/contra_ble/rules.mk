@@ -1,5 +1,5 @@
 
-DEFAULT_FOLDER = ble_micro_test/pro_v1
+DEFAULT_FOLDER = contra_ble/pro_v1
 
 NRF_DEBUG = no
 

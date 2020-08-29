@@ -1,0 +1,8 @@
+#ifndef KEYBOARDS_CONTRA_BLE_CONTRA_BLE_H_
+#define KEYBOARDS_CONTRA_BLE_CONTRA_BLE_H_
+
+#include "quantum.h"
+
+
+#endif /* KEYBOARDS_CONTRA_BLE_CONTRA_BLE_H_ */
+
