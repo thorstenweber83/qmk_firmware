@@ -9,13 +9,27 @@ Keyboard Maintainer: The QMK Community
 Hardware Supported: CONTRA  
 Hardware Availability: [CARTEL](https://cartel.ltd/projects/contra/)
 
-Make example for this keyboard (after setting up your build environment):
-
-    make contra:dana
-
-See [build environment setup](https://docs.qmk.fm/build_environment_setup.html) then the [make instructions](https://docs.qmk.fm/make_instructions.html) for more information.
-
-
-#### BLE Support via nice!nano
+### BLE Support via nice!nano
 
 <https://docs.nicekeyboards.com>
+
+
+
+## flashing
+
+### UF2
+
+this looks like it's working on my nixos machine
+
+see <https://github.com/adafruit/Adafruit_nRF52_Bootloader#making-your-own-uf2>
+
+    make contra_ble:default
+    # now double tap reset and make sure the usb drive (e.g. /run/media/$USER/NICENANO) is mounted
+    ./util/uf2conv.py contra_ble_pro_v1_default.bin -b 0x26000 -f 0xADA52840
+
+### DFU
+
+unfortunately this did not work for me
+
+    # double tap reset to enter DFU mode
+    make contra_ble:default:nrfutil    
