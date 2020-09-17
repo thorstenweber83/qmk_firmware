@@ -17,6 +17,12 @@ enum custom_keycodes {
   ADJUST,
 };
 
+float coin_sound[][2] = SONG(COIN_SOUND);
+float one_up_sound[][2] = SONG(ONE_UP_SOUND);
+float mario_theme[][2] = SONG(MARIO_THEME);
+float mario_gameover[][2] = SONG(MARIO_GAMEOVER);
+float mario_mushroom[][2] = SONG(MARIO_MUSHROOM);
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
@@ -77,23 +83,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------------------------------------------------.
  * |      |  ä   |      |      |      |      |  ü   | USB  |      |      |  ö   |  Del |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |Reset | AUTO |  ß   |      |      |      | Left | Down |  Up  |Right |      |      |
+ * |Reset | AUTO |  ß   |Aud on|Audoff|Clicky| Left | Down |  Up  |Right |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |  BT  |      |      |      |      |      |      |
+ * |      |      |      |Music | 𝄞mod |  BT  |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] =  LAYOUT_ortho_4x12( \
-  _______, RALT(KC_Q), _______,    _______, _______, _______, RALT(KC_Y), OUT_USB, _______, _______, RALT(KC_P), KC_DEL, \
-  RESET,   OUT_AUTO,   RALT(KC_S), _______, _______, _______, KC_LEFT,    KC_DOWN, KC_UP,   KC_RGHT, _______,    _______, \
-  _______, _______,    _______,    _______, _______, OUT_BT , _______,    _______, _______, _______, _______,    _______, \
-  _______, _______,    _______,    _______, _______, _______, _______,    _______, _______, _______, _______,    _______ \
+  _______, RALT(KC_Q), _______,    _______, _______, _______, RALT(KC_Y), OUT_USB, _______, _______, RALT(KC_P),   KC_DEL, \
+  RESET,   OUT_AUTO,   RALT(KC_S), AU_ON,   AU_OFF,  CK_TOGG, KC_LEFT,    KC_DOWN,   KC_UP, KC_RGHT,    _______,  _______, \
+  _______, _______,    _______,    MU_TOG,  MU_MOD,  OUT_BT , _______,    _______, _______, _______,    _______,  _______, \
+  _______, _______,    _______,    _______, _______, CK_UP  , CK_DOWN,    _______, _______, _______,    _______,  _______ \
 )
 
 
 };
 
+#ifdef AUDIO_ENABLE
+float tone_qwerty[][2]     = SONG(QWERTY_SOUND);
+#endif
 
 void persistent_default_layer_set(uint16_t default_layer) {
   eeconfig_update_default_layer(default_layer);
@@ -104,6 +113,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
       if (record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          PLAY_SONG(tone_qwerty);
+        #endif
         persistent_default_layer_set(1UL<<_QWERTY);
       }
       return false;
@@ -130,12 +142,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case ADJUST:
       if (record->event.pressed) {
+        #ifdef AUDIO_ENABLE
+          PLAY_SONG(mario_mushroom);
+        #endif
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
       }
       return false;
       break;
+
+  #ifdef AUDIO_ENABLE
+    case KC_BSPC:
+      if (record->event.pressed) {
+        PLAY_SONG(coin_sound);
+      }
+      break;
+  #endif
+
   }
   return true;
 }
