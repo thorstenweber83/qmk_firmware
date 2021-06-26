@@ -1,0 +1,1 @@
+bootloader = atmel-dfu

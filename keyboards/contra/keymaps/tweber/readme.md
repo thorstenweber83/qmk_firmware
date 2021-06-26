@@ -19,4 +19,4 @@ changes:
 
 flash using:
 
-    make contra:tweber:avrdude
+    sudo make contra:tweber:dfu
